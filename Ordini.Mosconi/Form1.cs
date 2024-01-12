@@ -131,5 +131,96 @@ namespace Ordini.Mosconi
             
             dataGridView1.DataSource = Query($"select * from clienti where clienti.{valori[comboBox1.SelectedIndex - 1]} = '{comboBox2.Items[comboBox2.SelectedIndex]}';");
         }
+
+        private void label2_Click(object sender, EventArgs e) {
+
+        }
+
+        private void comboBox5_SelectedIndexChanged(object sender, EventArgs e) {
+            comboBox6.Visible = true;
+            switch (comboBox5.SelectedIndex) {
+                case 0:
+                    comboBox6.Visible = false;
+                    dataGridView3.DataSource = Query("select * from oggetti;");
+
+                    break;
+
+                case 1:
+                    comboBox6.Items.Clear();
+                    comboBox6.Items.AddRange(DataTableToStringArray(Query("select id from oggetti")));
+
+                    break;
+
+                case 2:
+                    comboBox6.Items.Clear();
+                    comboBox6.Items.AddRange(DataTableToStringArray(Query("select nome from oggetti")));
+
+                    break;
+
+                case 3:
+                    comboBox6.Items.Clear();
+                    comboBox6.Items.AddRange(DataTableToStringArray(Query("select costo from oggetti")));
+
+                    break;
+            }
+        }
+
+        private void comboBox6_SelectedIndexChanged(object sender, EventArgs e) {
+            string[] valori = new string[] { "id", "nome", "costo"};
+
+            dataGridView3.DataSource = Query($"select * from oggetti where oggetti.{valori[comboBox5.SelectedIndex - 1]} = '{comboBox6.Items[comboBox6.SelectedIndex]}';");
+        }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e) {
+            comboBox4.Visible = true;
+            switch (comboBox3.SelectedIndex) {
+                case 0:
+                    comboBox4.Visible = false;
+                    dataGridView2.DataSource = Query("select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;");
+
+                    break;
+
+                case 1:
+                    comboBox4.Items.Clear();
+                    comboBox4.Items.AddRange(DataTableToStringArray(Query("select ordini.id from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;")));
+
+                    break;
+
+                case 2:
+                    comboBox4.Items.Clear();
+                    comboBox4.Items.AddRange(DataTableToStringArray(Query("select cliente_id from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;")));
+
+                    break;
+
+                case 3:
+                    comboBox4.Items.Clear();
+                    comboBox4.Items.AddRange(DataTableToStringArray(Query("select data_ordine from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;")));
+
+                    break;
+
+                case 4:
+                    comboBox4.Items.Clear();
+                    comboBox4.Items.AddRange(DataTableToStringArray(Query("select oggetto_id from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;")));
+
+                    break;
+            }
+        }
+
+        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e) {
+            string[] valori = new string[] { "id", "cliente_id", "data_ordine", "oggetto_id" };
+
+            if (comboBox3.SelectedIndex - 1 == 0)
+                dataGridView2.DataSource = Query($"select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id where ordini.{valori[comboBox3.SelectedIndex - 1]} = '{comboBox4.Items[comboBox4.SelectedIndex]}';");
+            else if (comboBox3.SelectedIndex - 1 == 1 || comboBox3.SelectedIndex - 1 == 3)
+                dataGridView2.DataSource = Query($"select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id where {valori[comboBox3.SelectedIndex - 1]} = '{comboBox4.Items[comboBox4.SelectedIndex]}';");
+            else if (comboBox3.SelectedIndex - 1 == 2) {
+                string date = comboBox4.Items[comboBox4.SelectedIndex].ToString();
+
+                date = date.Split(' ')[0]; //modifico formato data
+                date = date.Split('/')[2] + date.Split('/')[1] + date.Split('/')[0];
+
+                dataGridView2.DataSource = Query($"select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id where ordini.{valori[comboBox3.SelectedIndex - 1]} = '{date}';");
+            }
+        }
     }
 }
