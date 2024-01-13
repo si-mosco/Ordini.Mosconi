@@ -33,17 +33,17 @@ namespace Ordini.Mosconi
             Aggiorna();
         }
 
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e) //aggiorno tutte le volte che cambio tab
         {
             Aggiorna();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e) //bottone aggionrna DA RIVEDERE
         {
             Aggiorna();
         }
 
-        private void Aggiorna()
+        private void Aggiorna() //riprende i valori direttamente dal database
         {
             String ConnectionString = "server=localhost;uid=Utente1;pwd=password;database=ordini";
             MySqlConnection conn = new MySqlConnection(ConnectionString);
@@ -52,10 +52,21 @@ namespace Ordini.Mosconi
             dataGridView1.DataSource = Query("select * from clienti;");
             dataGridView2.DataSource = Query("select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;");
             dataGridView3.DataSource = Query("select * from oggetti;");
+
+            comboBox1.SelectedItem = comboBox1.Items[0]; //azzero i valori
+            comboBox2.SelectedItem = comboBox2.Items[0];
+            comboBox2.Visible = false;
+            comboBox3.SelectedItem = comboBox3.Items[0];
+            comboBox4.SelectedItem = comboBox4.Items[0];
+            comboBox4.Visible = false;
+            comboBox5.SelectedItem = comboBox5.Items[0];
+            comboBox6.SelectedItem = comboBox6.Items[0];
+            comboBox6.Visible = false;
+
             conn.Close();
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) //in base alla selezione cambio i valori della combobox successiva
         {
             comboBox2.Visible = true;
             switch (comboBox1.SelectedIndex)
@@ -92,7 +103,7 @@ namespace Ordini.Mosconi
             }
         }
 
-        public static string[] DataTableToStringArray(DataTable dt)
+        public static string[] DataTableToStringArray(DataTable dt) //converte il risultato di una query in un array di stringhe
         {
             string[] result = new string[dt.Rows.Count];
             int index = 0;
@@ -105,7 +116,7 @@ namespace Ordini.Mosconi
             return result;
         }
 
-        private DataTable Query(string query) {
+        private DataTable Query(string query) { //esegue le query
             String ConnectionString = "server=localhost;uid=Utente1;pwd=password;database=ordini";
             MySqlConnection conn = new MySqlConnection(ConnectionString);
             conn.Open();
@@ -123,12 +134,9 @@ namespace Ordini.Mosconi
             return dati;
         }
 
-        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e) {
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e) { //filtro clienti
             string[] valori = new string[] {"id", "nome", "cognome", "email"};
 
-            //MessageBox.Show(valori[comboBox1.SelectedIndex-1] + " - " + comboBox1.SelectedIndex);
-            //MessageBox.Show($"select * from clienti where {valori[comboBox1.SelectedIndex - 1]}={comboBox2.Items[comboBox2.SelectedIndex].ToString()};");
-            
             dataGridView1.DataSource = Query($"select * from clienti where clienti.{valori[comboBox1.SelectedIndex - 1]} = '{comboBox2.GetItemText(comboBox2.SelectedItem)}';");
         }
 
@@ -136,7 +144,7 @@ namespace Ordini.Mosconi
 
         }
 
-        private void comboBox5_SelectedIndexChanged(object sender, EventArgs e) {
+        private void comboBox5_SelectedIndexChanged(object sender, EventArgs e) { //in base alla selezione cambio i valori della combobox successiva
             comboBox6.Visible = true;
             switch (comboBox5.SelectedIndex) {
                 case 0:
@@ -165,13 +173,13 @@ namespace Ordini.Mosconi
             }
         }
 
-        private void comboBox6_SelectedIndexChanged(object sender, EventArgs e) {
+        private void comboBox6_SelectedIndexChanged(object sender, EventArgs e) { //filtro oggetto
             string[] valori = new string[] { "id", "nome", "costo"};
 
             dataGridView3.DataSource = Query($"select * from oggetti where oggetti.{valori[comboBox5.SelectedIndex - 1]} = '{comboBox6.GetItemText(comboBox6.SelectedItem)}';");
         }
 
-        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e) {
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e) { //in base alla selezione cambio i valori della combobox successiva
             comboBox4.Visible = true;
             switch (comboBox3.SelectedIndex) {
                 case 0:
@@ -206,7 +214,7 @@ namespace Ordini.Mosconi
             }
         }
 
-        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e) {
+        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e) { //filtro per gli ordini
             string[] valori = new string[] { "id", "cliente_id", "data_ordine", "oggetto_id" };
 
             if (comboBox3.SelectedIndex - 1 == 0)
