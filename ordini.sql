@@ -39,8 +39,15 @@ CREATE TABLE `clienti` (
 
 INSERT INTO `clienti` (`id`, `nome`, `cognome`, `email`) VALUES
 (1, 'Simone', 'Mosconi', 'simonemosconi@gmail.com'),
-(2, 'Marco', 'Borelli', 'mrcoborelli@gmail.com'),
-(3, 'Nicola', 'Ghilardi', 'nicolaghilardi@gmail.com');
+(2, 'Marco', 'Borelli', 'marcoborelli@gmail.com'),
+(3, 'Nicola', 'Ghilardi', 'nicolaghilardi@gmail.com'),
+(4, 'Pietro', 'Patelli', 'pietropatelli@gmail.com'),
+(5, 'Andrea', 'Crotti', 'andreacrotti@gmail.com'),
+(6, 'Jacopo', 'Ferrari', 'jacopoferrari@gmail.com'),
+(7, 'Matteo', 'Verzeri', 'matteoverzeri@gmail.com'),
+(8, 'Alessandro', 'Colombi', 'alessandrocolombi@gmail.com'),
+(9, 'Tommaso', 'Todeschini', 'tommasotodeschini@gmail.com'),
+(10, 'Tomas', 'Cutinella', 'tomascutinella@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -83,7 +90,24 @@ CREATE TABLE `ordini` (
 INSERT INTO `ordini` (`id`, `cliente_id`, `data_ordine`, `oggetto_id`) VALUES
 (1, 1, '2024-01-01', 1),
 (2, 2, '2024-01-02', 2),
-(3, 3, '2024-01-03', 3);
+(3, 3, '2024-01-03', 3),
+(4, 4, '2024-01-06', 3),
+(5, 5, '2024-01-02', 2),
+(6, 6, '2024-01-03', 1),
+(7, 7, '2024-01-07', 3),
+(8, 8, '2024-01-01', 1),
+(9, 9, '2024-01-03', 2),
+(10, 10, '2024-01-08', 3),
+(11, 1, '2024-01-02', 2),
+(12, 2, '2024-01-07', 1),
+(13, 3, '2024-01-04', 3),
+(14, 4, '2024-01-01', 2),
+(15, 5, '2024-01-03', 2),
+(16, 6, '2024-01-04', 1),
+(17, 7, '2024-01-03', 3),
+(18, 8, '2024-01-03', 1),
+(19, 9, '2024-01-09', 2),
+(20, 10, '2024-01-07', 3);
 
 --
 -- Indici per le tabelle scaricate

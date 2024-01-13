@@ -68,25 +68,25 @@ namespace Ordini.Mosconi
 
                 case 1:
                     comboBox2.Items.Clear();
-                    comboBox2.Items.AddRange(DataTableToStringArray(Query("select id from clienti")));
+                    comboBox2.Items.AddRange(DataTableToStringArray(Query("select id from clienti")).Distinct().ToArray());
 
                     break;
 
                 case 2:
                     comboBox2.Items.Clear();
-                    comboBox2.Items.AddRange(DataTableToStringArray(Query("select nome from clienti")));
+                    comboBox2.Items.AddRange(DataTableToStringArray(Query("select nome from clienti")).Distinct().ToArray());
 
                     break;
 
                 case 3:
                     comboBox2.Items.Clear();
-                    comboBox2.Items.AddRange(DataTableToStringArray(Query("select cognome from clienti")));
+                    comboBox2.Items.AddRange(DataTableToStringArray(Query("select cognome from clienti")).Distinct().ToArray());
 
                     break;
 
                 case 4:
                     comboBox2.Items.Clear();
-                    comboBox2.Items.AddRange(DataTableToStringArray(Query("select email from clienti")));
+                    comboBox2.Items.AddRange(DataTableToStringArray(Query("select email from clienti")).Distinct().ToArray());
 
                     break;
             }
@@ -129,7 +129,7 @@ namespace Ordini.Mosconi
             //MessageBox.Show(valori[comboBox1.SelectedIndex-1] + " - " + comboBox1.SelectedIndex);
             //MessageBox.Show($"select * from clienti where {valori[comboBox1.SelectedIndex - 1]}={comboBox2.Items[comboBox2.SelectedIndex].ToString()};");
             
-            dataGridView1.DataSource = Query($"select * from clienti where clienti.{valori[comboBox1.SelectedIndex - 1]} = '{comboBox2.Items[comboBox2.SelectedIndex]}';");
+            dataGridView1.DataSource = Query($"select * from clienti where clienti.{valori[comboBox1.SelectedIndex - 1]} = '{comboBox2.GetItemText(comboBox2.SelectedItem)}';");
         }
 
         private void label2_Click(object sender, EventArgs e) {
@@ -147,19 +147,19 @@ namespace Ordini.Mosconi
 
                 case 1:
                     comboBox6.Items.Clear();
-                    comboBox6.Items.AddRange(DataTableToStringArray(Query("select id from oggetti")));
+                    comboBox6.Items.AddRange(DataTableToStringArray(Query("select id from oggetti")).Distinct().ToArray());
 
                     break;
 
                 case 2:
                     comboBox6.Items.Clear();
-                    comboBox6.Items.AddRange(DataTableToStringArray(Query("select nome from oggetti")));
+                    comboBox6.Items.AddRange(DataTableToStringArray(Query("select nome from oggetti")).Distinct().ToArray());
 
                     break;
 
                 case 3:
                     comboBox6.Items.Clear();
-                    comboBox6.Items.AddRange(DataTableToStringArray(Query("select costo from oggetti")));
+                    comboBox6.Items.AddRange(DataTableToStringArray(Query("select costo from oggetti")).Distinct().ToArray());
 
                     break;
             }
@@ -168,7 +168,7 @@ namespace Ordini.Mosconi
         private void comboBox6_SelectedIndexChanged(object sender, EventArgs e) {
             string[] valori = new string[] { "id", "nome", "costo"};
 
-            dataGridView3.DataSource = Query($"select * from oggetti where oggetti.{valori[comboBox5.SelectedIndex - 1]} = '{comboBox6.Items[comboBox6.SelectedIndex]}';");
+            dataGridView3.DataSource = Query($"select * from oggetti where oggetti.{valori[comboBox5.SelectedIndex - 1]} = '{comboBox6.GetItemText(comboBox6.SelectedItem)}';");
         }
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e) {
@@ -182,25 +182,25 @@ namespace Ordini.Mosconi
 
                 case 1:
                     comboBox4.Items.Clear();
-                    comboBox4.Items.AddRange(DataTableToStringArray(Query("select ordini.id from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;")));
+                    comboBox4.Items.AddRange(DataTableToStringArray(Query("select ordini.id from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;")).Distinct().ToArray());
 
                     break;
 
                 case 2:
                     comboBox4.Items.Clear();
-                    comboBox4.Items.AddRange(DataTableToStringArray(Query("select cliente_id from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;")));
+                    comboBox4.Items.AddRange(DataTableToStringArray(Query("select cliente_id from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;")).Distinct().ToArray());
 
                     break;
 
                 case 3:
                     comboBox4.Items.Clear();
-                    comboBox4.Items.AddRange(DataTableToStringArray(Query("select data_ordine from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;")));
+                    comboBox4.Items.AddRange(DataTableToStringArray(Query("select data_ordine from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;")).Distinct().ToArray());
 
                     break;
 
                 case 4:
                     comboBox4.Items.Clear();
-                    comboBox4.Items.AddRange(DataTableToStringArray(Query("select oggetto_id from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;")));
+                    comboBox4.Items.AddRange(DataTableToStringArray(Query("select oggetto_id from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;")).Distinct().ToArray());
 
                     break;
             }
@@ -210,9 +210,9 @@ namespace Ordini.Mosconi
             string[] valori = new string[] { "id", "cliente_id", "data_ordine", "oggetto_id" };
 
             if (comboBox3.SelectedIndex - 1 == 0)
-                dataGridView2.DataSource = Query($"select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id where ordini.{valori[comboBox3.SelectedIndex - 1]} = '{comboBox4.Items[comboBox4.SelectedIndex]}';");
+                dataGridView2.DataSource = Query($"select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id where ordini.{valori[comboBox3.SelectedIndex - 1]} = '{comboBox4.GetItemText(comboBox4.SelectedItem)}';");
             else if (comboBox3.SelectedIndex - 1 == 1 || comboBox3.SelectedIndex - 1 == 3)
-                dataGridView2.DataSource = Query($"select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id where {valori[comboBox3.SelectedIndex - 1]} = '{comboBox4.Items[comboBox4.SelectedIndex]}';");
+                dataGridView2.DataSource = Query($"select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id where {valori[comboBox3.SelectedIndex - 1]} = '{comboBox4.GetItemText(comboBox4.SelectedItem)}';");
             else if (comboBox3.SelectedIndex - 1 == 2) {
                 string date = comboBox4.Items[comboBox4.SelectedIndex].ToString();
 
