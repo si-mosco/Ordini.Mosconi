@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Creato il: Gen 12, 2024 alle 15:08
+-- Creato il: Gen 13, 2024 alle 14:32
 -- Versione del server: 5.7.11
 -- Versione PHP: 5.6.18
 
@@ -68,7 +68,11 @@ CREATE TABLE `oggetti` (
 INSERT INTO `oggetti` (`id`, `nome`, `costo`) VALUES
 (1, 'Cover', 10),
 (2, 'Carica Batteria', 20),
-(3, 'Cuffie', 30);
+(3, 'Cuffie', 30),
+(4, 'Maglietta', 15),
+(5, 'Calzini', 3),
+(6, 'Berretta', 10),
+(7, 'SetTazze', 15);
 
 -- --------------------------------------------------------
 
@@ -142,17 +146,17 @@ ALTER TABLE `ordini`
 -- AUTO_INCREMENT per la tabella `clienti`
 --
 ALTER TABLE `clienti`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT per la tabella `oggetti`
 --
 ALTER TABLE `oggetti`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT per la tabella `ordini`
 --
 ALTER TABLE `ordini`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- Limiti per le tabelle scaricate
 --

@@ -45,7 +45,7 @@ namespace Ordini.Mosconi
 
         private void Aggiorna() //riprende i valori direttamente dal database
         {
-            String ConnectionString = "server=localhost;uid=Utente1;pwd=password;database=ordini";
+            String ConnectionString = "server=127.0.0.1;uid=Utente1;pwd=password;database=ordini";
             MySqlConnection conn = new MySqlConnection(ConnectionString);
             conn.Open();
             
@@ -53,14 +53,14 @@ namespace Ordini.Mosconi
             dataGridView2.DataSource = Query("select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;");
             dataGridView3.DataSource = Query("select * from oggetti;");
 
-            comboBox1.SelectedItem = comboBox1.Items[0]; //azzero i valori
-            comboBox2.SelectedItem = comboBox2.Items[0];
+            comboBox1.SelectedItem = comboBox1.Items[0];//azzero i valori
+            comboBox2.SelectedItem = null; 
             comboBox2.Visible = false;
             comboBox3.SelectedItem = comboBox3.Items[0];
-            comboBox4.SelectedItem = comboBox4.Items[0];
+            comboBox3.SelectedItem = null;
             comboBox4.Visible = false;
             comboBox5.SelectedItem = comboBox5.Items[0];
-            comboBox6.SelectedItem = comboBox6.Items[0];
+            comboBox6.SelectedItem = null;
             comboBox6.Visible = false;
 
             conn.Close();
