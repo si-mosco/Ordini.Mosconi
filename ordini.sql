@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Creato il: Gen 13, 2024 alle 14:32
+-- Creato il: Gen 14, 2024 alle 14:06
 -- Versione del server: 5.7.11
 -- Versione PHP: 5.6.18
 
@@ -146,7 +146,7 @@ ALTER TABLE `ordini`
 -- AUTO_INCREMENT per la tabella `clienti`
 --
 ALTER TABLE `clienti`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT per la tabella `oggetti`
 --
@@ -165,8 +165,8 @@ ALTER TABLE `ordini`
 -- Limiti per la tabella `ordini`
 --
 ALTER TABLE `ordini`
-  ADD CONSTRAINT `cliente` FOREIGN KEY (`cliente_id`) REFERENCES `clienti` (`id`),
-  ADD CONSTRAINT `oggetto` FOREIGN KEY (`oggetto_id`) REFERENCES `oggetti` (`id`);
+  ADD CONSTRAINT `cliente` FOREIGN KEY (`cliente_id`) REFERENCES `clienti` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `oggetto` FOREIGN KEY (`oggetto_id`) REFERENCES `oggetti` (`id`) ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
