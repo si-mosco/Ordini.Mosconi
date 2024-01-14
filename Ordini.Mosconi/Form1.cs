@@ -25,8 +25,14 @@ namespace Ordini.Mosconi {
 
         private void Form1_Load(object sender, EventArgs e) {
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView1.AllowUserToAddRows = false; //toglie ultima riga vuota
+            dataGridView1.MultiSelect = false; //toglie la possibilità di selezionare più righe insieme
             dataGridView2.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView2.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView2.AllowUserToAddRows = false;
+            dataGridView2.MultiSelect = false;
+            dataGridView3.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView3.AllowUserToAddRows = false;
+            dataGridView3.MultiSelect = false;
             tabControl1.SelectedIndex = 3;
             comboBox1.SelectedIndex = 0;
 
