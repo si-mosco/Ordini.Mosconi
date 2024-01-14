@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,22 +14,25 @@ using MySqlX.XDevAPI;
 using MySqlX.XDevAPI.Relational;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace Ordini.Mosconi
-{
-    public partial class Form1 : Form
-    {
-        public Form1()
-        {
+namespace Ordini.Mosconi {
+    public partial class Form1 : Form {
+        public DataTable d1 = new DataTable();
+        public DataTable d2 = new DataTable();
+        public DataTable d3 = new DataTable();
+        public Form1() {
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
+        private void Form1_Load(object sender, EventArgs e) {
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView2.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView2.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             tabControl1.SelectedIndex = 3;
             comboBox1.SelectedIndex = 0;
+
+            d1= Query("select * from clienti;");
+            d2= Query("select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;");
+            d3= Query("select * from oggetti;");
 
             Aggiorna();
         }
@@ -48,13 +52,11 @@ namespace Ordini.Mosconi
             String ConnectionString = "server=127.0.0.1;uid=Utente1;pwd=password;database=ordini";
             MySqlConnection conn = new MySqlConnection(ConnectionString);
             conn.Open();
-            
-            dataGridView1.DataSource = Query("select * from clienti;");
-            dataGridView2.DataSource = Query("select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;");
-            dataGridView3.DataSource = Query("select * from oggetti;");
+
+            AggiornaGridView();
 
             comboBox1.SelectedItem = comboBox1.Items[0];//azzero i valori
-            comboBox2.SelectedItem = null; 
+            comboBox2.SelectedItem = null;
             comboBox2.Visible = false;
             comboBox3.SelectedItem = comboBox3.Items[0];
             comboBox3.SelectedItem = null;
@@ -66,14 +68,19 @@ namespace Ordini.Mosconi
             conn.Close();
         }
 
+        public void AggiornaGridView() {
+            dataGridView1.DataSource = d1;
+            dataGridView2.DataSource = d2;
+            dataGridView3.DataSource = d3;
+        }
+
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) //in base alla selezione cambio i valori della combobox successiva
         {
             comboBox2.Visible = true;
-            switch (comboBox1.SelectedIndex)
-            {
+            switch (comboBox1.SelectedIndex) {
                 case 0:
-                    comboBox2.Visible=false;
-                    dataGridView1.DataSource = Query("select * from clienti;");
+                    comboBox2.Visible = false;
+                    d1 = Query("select * from clienti;");
 
                     break;
 
@@ -101,6 +108,7 @@ namespace Ordini.Mosconi
 
                     break;
             }
+            AggiornaGridView();
         }
 
         public static string[] DataTableToStringArray(DataTable dt) //converte il risultato di una query in un array di stringhe
@@ -135,9 +143,10 @@ namespace Ordini.Mosconi
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e) { //filtro clienti
-            string[] valori = new string[] {"id", "nome", "cognome", "email"};
+            string[] valori = new string[] { "id", "nome", "cognome", "email" };
+            d1 = Query($"select * from clienti where clienti.{valori[comboBox1.SelectedIndex - 1]} = '{comboBox2.GetItemText(comboBox2.SelectedItem)}';");
 
-            dataGridView1.DataSource = Query($"select * from clienti where clienti.{valori[comboBox1.SelectedIndex - 1]} = '{comboBox2.GetItemText(comboBox2.SelectedItem)}';");
+            AggiornaGridView();
         }
 
         private void label2_Click(object sender, EventArgs e) {
@@ -149,7 +158,7 @@ namespace Ordini.Mosconi
             switch (comboBox5.SelectedIndex) {
                 case 0:
                     comboBox6.Visible = false;
-                    dataGridView3.DataSource = Query("select * from oggetti;");
+                    d3 = Query("select * from oggetti;");
 
                     break;
 
@@ -171,12 +180,14 @@ namespace Ordini.Mosconi
 
                     break;
             }
+            AggiornaGridView();
         }
 
         private void comboBox6_SelectedIndexChanged(object sender, EventArgs e) { //filtro oggetto
-            string[] valori = new string[] { "id", "nome", "costo"};
+            string[] valori = new string[] { "id", "nome", "costo" };
+            d3 = Query($"select * from oggetti where oggetti.{valori[comboBox5.SelectedIndex - 1]} = '{comboBox6.GetItemText(comboBox6.SelectedItem)}';");
 
-            dataGridView3.DataSource = Query($"select * from oggetti where oggetti.{valori[comboBox5.SelectedIndex - 1]} = '{comboBox6.GetItemText(comboBox6.SelectedItem)}';");
+            AggiornaGridView();
         }
 
         private void comboBox3_SelectedIndexChanged(object sender, EventArgs e) { //in base alla selezione cambio i valori della combobox successiva
@@ -184,7 +195,7 @@ namespace Ordini.Mosconi
             switch (comboBox3.SelectedIndex) {
                 case 0:
                     comboBox4.Visible = false;
-                    dataGridView2.DataSource = Query("select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;");
+                    d2 = Query("select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;");
 
                     break;
 
@@ -212,23 +223,78 @@ namespace Ordini.Mosconi
 
                     break;
             }
+            AggiornaGridView();
         }
 
         private void comboBox4_SelectedIndexChanged(object sender, EventArgs e) { //filtro per gli ordini
             string[] valori = new string[] { "id", "cliente_id", "data_ordine", "oggetto_id" };
 
             if (comboBox3.SelectedIndex - 1 == 0)
-                dataGridView2.DataSource = Query($"select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id where ordini.{valori[comboBox3.SelectedIndex - 1]} = '{comboBox4.GetItemText(comboBox4.SelectedItem)}';");
+                d2 = Query($"select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id where ordini.{valori[comboBox3.SelectedIndex - 1]} = '{comboBox4.GetItemText(comboBox4.SelectedItem)}';");
             else if (comboBox3.SelectedIndex - 1 == 1 || comboBox3.SelectedIndex - 1 == 3)
-                dataGridView2.DataSource = Query($"select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id where {valori[comboBox3.SelectedIndex - 1]} = '{comboBox4.GetItemText(comboBox4.SelectedItem)}';");
+                d2 = Query($"select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id where {valori[comboBox3.SelectedIndex - 1]} = '{comboBox4.GetItemText(comboBox4.SelectedItem)}';");
             else if (comboBox3.SelectedIndex - 1 == 2) {
                 string date = comboBox4.Items[comboBox4.SelectedIndex].ToString();
 
                 date = date.Split(' ')[0]; //modifico formato data
                 date = date.Split('/')[2] + date.Split('/')[1] + date.Split('/')[0];
 
-                dataGridView2.DataSource = Query($"select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id where ordini.{valori[comboBox3.SelectedIndex - 1]} = '{date}';");
+                d2 = Query($"select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id where ordini.{valori[comboBox3.SelectedIndex - 1]} = '{date}';");
             }
+            AggiornaGridView();
+        }
+
+        private void button2_Click(object sender, EventArgs e) {
+            Elimina();
+        }
+
+        private void Elimina() {
+            int selezionati = 0;
+            string pk="";
+            string table = "";
+            if (tabControl1.SelectedIndex == 0) {
+                table = "clienti";
+                selezionati = dataGridView1.SelectedRows.Count;
+                if (selezionati > 0)
+                    pk = dataGridView1.SelectedRows[0].Cells[0].Value.ToString();
+                else {
+                    MessageBox.Show("Selezionare un elemento");
+                    return;
+                }
+            } else if (tabControl1.SelectedIndex == 1) {
+                table = "ordini";
+                selezionati = dataGridView2.SelectedRows.Count;
+                if (selezionati > 0)
+                    pk = dataGridView2.SelectedRows[0].Cells[0].Value.ToString();
+                else {
+                    MessageBox.Show("Selezionare un elemento");
+                    return;
+                }
+            } else if (tabControl1.SelectedIndex == 2) {
+                table = "oggetti";
+                selezionati = dataGridView3.SelectedRows.Count;
+                if (selezionati > 0)
+                    pk = dataGridView3.SelectedRows[0].Cells[0].Value.ToString();
+                else {
+                    MessageBox.Show("Selezionare un elemento");
+                    return;
+                }
+            }
+
+            var ris = MessageBox.Show("", "Conferma cancellazione", MessageBoxButtons.YesNo);
+            if (ris == DialogResult.Yes) {
+                string sql = $"delete from {table} where id='{pk}';";
+
+                String ConnectionString = "server=localhost;uid=Utente1;pwd=password;database=ordini";
+                MySqlConnection conn = new MySqlConnection(ConnectionString);
+           
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                cmd.ExecuteNonQuery();
+                conn.Close();
+            }
+
+            AggiornaGridView();
         }
     }
 }
