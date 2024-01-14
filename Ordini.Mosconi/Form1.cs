@@ -56,14 +56,13 @@ namespace Ordini.Mosconi {
             AggiornaGridView();
 
             comboBox1.SelectedItem = comboBox1.Items[0];//azzero i valori
-            comboBox2.SelectedItem = null;
             comboBox2.Visible = false;
             comboBox3.SelectedItem = comboBox3.Items[0];
-            comboBox3.SelectedItem = null;
             comboBox4.Visible = false;
             comboBox5.SelectedItem = comboBox5.Items[0];
-            comboBox6.SelectedItem = null;
             comboBox6.Visible = false;
+            comboBox7.Visible = false;
+            numericUpDown1.Visible = false;
 
             conn.Close();
         }
@@ -124,7 +123,7 @@ namespace Ordini.Mosconi {
             return result;
         }
 
-        private DataTable Query(string query) { //esegue le query
+        public DataTable Query(string query) { //esegue le query
             String ConnectionString = "server=localhost;uid=Utente1;pwd=password;database=ordini";
             MySqlConnection conn = new MySqlConnection(ConnectionString);
             conn.Open();
@@ -142,6 +141,16 @@ namespace Ordini.Mosconi {
             return dati;
         }
 
+        public void ShortQuery(string query) {
+            String ConnectionString = "server=localhost;uid=Utente1;pwd=password;database=ordini";
+            MySqlConnection conn = new MySqlConnection(ConnectionString);
+
+            conn.Open();
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+            cmd.ExecuteNonQuery();
+            conn.Close();
+        }
+
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e) { //filtro clienti
             string[] valori = new string[] { "id", "nome", "cognome", "email" };
             d1 = Query($"select * from clienti where clienti.{valori[comboBox1.SelectedIndex - 1]} = '{comboBox2.GetItemText(comboBox2.SelectedItem)}';");
@@ -149,12 +158,10 @@ namespace Ordini.Mosconi {
             AggiornaGridView();
         }
 
-        private void label2_Click(object sender, EventArgs e) {
-
-        }
-
         private void comboBox5_SelectedIndexChanged(object sender, EventArgs e) { //in base alla selezione cambio i valori della combobox successiva
             comboBox6.Visible = true;
+            comboBox7.Visible = false;
+            numericUpDown1.Visible = false;
             switch (comboBox5.SelectedIndex) {
                 case 0:
                     comboBox6.Visible = false;
@@ -176,7 +183,9 @@ namespace Ordini.Mosconi {
 
                 case 3:
                     comboBox6.Items.Clear();
-                    comboBox6.Items.AddRange(DataTableToStringArray(Query("select costo from oggetti")).Distinct().ToArray());
+                    comboBox6.Visible = false;
+                    comboBox7.Visible = true;
+                    numericUpDown1.Visible = true;
 
                     break;
             }
@@ -185,8 +194,10 @@ namespace Ordini.Mosconi {
 
         private void comboBox6_SelectedIndexChanged(object sender, EventArgs e) { //filtro oggetto
             string[] valori = new string[] { "id", "nome", "costo" };
-            d3 = Query($"select * from oggetti where oggetti.{valori[comboBox5.SelectedIndex - 1]} = '{comboBox6.GetItemText(comboBox6.SelectedItem)}';");
 
+            if (comboBox5.SelectedIndex != 3)
+                d3 = Query($"select * from oggetti where oggetti.{valori[comboBox5.SelectedIndex - 1]} = '{comboBox6.GetItemText(comboBox6.SelectedItem)}';");
+            
             AggiornaGridView();
         }
 
@@ -282,17 +293,15 @@ namespace Ordini.Mosconi {
             }
 
             var ris = MessageBox.Show("", "Conferma cancellazione", MessageBoxButtons.YesNo);
-            if (ris == DialogResult.Yes) {
-                string sql = $"delete from {table} where id='{pk}';";
+            if (ris == DialogResult.Yes)
+                ShortQuery($"delete from {table} where id='{pk}';");
 
-                String ConnectionString = "server=localhost;uid=Utente1;pwd=password;database=ordini";
-                MySqlConnection conn = new MySqlConnection(ConnectionString);
-           
-                conn.Open();
-                MySqlCommand cmd = new MySqlCommand(sql, conn);
-                cmd.ExecuteNonQuery();
-                conn.Close();
-            }
+            AggiornaGridView();
+        }
+
+        private void comboBox7_SelectedIndexChanged(object sender, EventArgs e) {
+            if (comboBox5.SelectedIndex == 3)
+                d3 = Query($"select * from oggetti where oggetti.costo {comboBox7.GetItemText(comboBox7.SelectedItem)} {numericUpDown1.Value};");
 
             AggiornaGridView();
         }
