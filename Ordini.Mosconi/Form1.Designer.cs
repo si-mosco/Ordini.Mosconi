@@ -48,6 +48,8 @@
             this.dataGridView3 = new System.Windows.Forms.DataGridView();
             this.button1 = new System.Windows.Forms.Button();
             this.comboBox7 = new System.Windows.Forms.ComboBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -89,7 +91,7 @@
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.button2.Location = new System.Drawing.Point(7, 385);
+            this.button2.Location = new System.Drawing.Point(8, 383);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(108, 34);
             this.button2.TabIndex = 4;
@@ -148,6 +150,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.button3);
             this.tabPage2.Controls.Add(this.comboBox4);
             this.tabPage2.Controls.Add(this.comboBox3);
             this.tabPage2.Controls.Add(this.label2);
@@ -225,6 +228,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.button4);
             this.tabPage3.Controls.Add(this.comboBox7);
             this.tabPage3.Controls.Add(this.comboBox6);
             this.tabPage3.Controls.Add(this.numericUpDown1);
@@ -314,6 +318,28 @@
             this.comboBox7.TabIndex = 6;
             this.comboBox7.SelectedIndexChanged += new System.EventHandler(this.comboBox7_SelectedIndexChanged);
             // 
+            // button3
+            // 
+            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
+            this.button3.Location = new System.Drawing.Point(8, 383);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(108, 34);
+            this.button3.TabIndex = 5;
+            this.button3.Text = "Elimina";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button4
+            // 
+            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
+            this.button4.Location = new System.Drawing.Point(8, 383);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(108, 34);
+            this.button4.TabIndex = 7;
+            this.button4.Text = "Elimina";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -361,6 +387,8 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.ComboBox comboBox7;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button button4;
     }
 }
 

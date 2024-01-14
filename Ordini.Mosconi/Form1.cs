@@ -305,5 +305,13 @@ namespace Ordini.Mosconi {
 
             AggiornaGridView();
         }
+
+        private void button3_Click(object sender, EventArgs e) {
+            Elimina();
+        }
+
+        private void button4_Click(object sender, EventArgs e) {
+            Elimina();
+        }
     }
 }
