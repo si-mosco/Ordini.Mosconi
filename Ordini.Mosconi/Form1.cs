@@ -444,7 +444,7 @@ namespace Ordini.Mosconi {
 
         private void comboBox9_SelectedIndexChanged(object sender, EventArgs e) {
             dataGridView3.Sort(dataGridView3.Columns[comboBox9.SelectedIndex], checkBox2.Checked ? System.ComponentModel.ListSortDirection.Descending : System.ComponentModel.ListSortDirection.Ascending);
-            d3 = ConvertDataGridViewToDataTable(dataGridView2);
+            d3 = ConvertDataGridViewToDataTable(dataGridView3);
 
             AggiornaGridView();
         }

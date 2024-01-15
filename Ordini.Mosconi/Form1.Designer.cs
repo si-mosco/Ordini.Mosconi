@@ -415,8 +415,7 @@
             this.comboBox9.Items.AddRange(new object[] {
             "Id",
             "Nome",
-            "Cognome",
-            "Email"});
+            "Costo"});
             this.comboBox9.Location = new System.Drawing.Point(129, 163);
             this.comboBox9.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox9.Name = "comboBox9";
