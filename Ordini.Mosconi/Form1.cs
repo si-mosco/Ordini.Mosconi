@@ -64,17 +64,27 @@ namespace Ordini.Mosconi {
             //clienti
             comboBox1.SelectedItem = comboBox1.Items[0];//azzero i valori
             comboBox2.Visible = false;
+            comboBox2.Items.Clear();
             comboBox8.SelectedItem = comboBox8.Items[0];
 
             //ordini
             comboBox3.SelectedItem = comboBox3.Items[0];
-            comboBox4.Visible = false;
+            comboBox4.Visible = false; 
+            comboBox4.Items.Clear();
+            comboBox10.SelectedItem = comboBox10.Items[0];
+            comboBox11.Items.Clear();
+            comboBox12.Items.Clear();
+            comboBox11.Items.AddRange(DataTableToStringArray(Query("select clienti.email from clienti;")).Distinct().ToArray());
+            comboBox12.Items.AddRange(DataTableToStringArray(Query("select oggetti.nome from oggetti;")).Distinct().ToArray());
+
 
             //oggetti
             comboBox5.SelectedItem = comboBox5.Items[0];
+            comboBox6.Items.Clear();
             comboBox6.Visible = false;
             comboBox7.Visible = false;
             numericUpDown1.Visible = false;
+            comboBox9.SelectedItem = comboBox9.Items[0];
 
             conn.Close();
         }
@@ -261,7 +271,7 @@ namespace Ordini.Mosconi {
 
                 case 2:
                     comboBox4.Items.Clear();
-                    comboBox4.Items.AddRange(DataTableToStringArray(Query("select cliente_id from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;")).Distinct().ToArray());
+                    comboBox4.Items.AddRange(DataTableToStringArray(Query("select clienti.email from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;")).Distinct().ToArray());
 
                     break;
 
@@ -273,7 +283,7 @@ namespace Ordini.Mosconi {
 
                 case 4:
                     comboBox4.Items.Clear();
-                    comboBox4.Items.AddRange(DataTableToStringArray(Query("select oggetto_id from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;")).Distinct().ToArray());
+                    comboBox4.Items.AddRange(DataTableToStringArray(Query("select oggetti.nome from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;")).Distinct().ToArray());
 
                     break;
             }
@@ -451,6 +461,56 @@ namespace Ordini.Mosconi {
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e) {
             comboBox9_SelectedIndexChanged(sender, e);
+        }
+
+        private void comboBox10_SelectedIndexChanged(object sender, EventArgs e) {
+            dataGridView2.Sort(dataGridView2.Columns[comboBox10.SelectedIndex], checkBox3.Checked ? System.ComponentModel.ListSortDirection.Descending : System.ComponentModel.ListSortDirection.Ascending);
+            d2 = ConvertDataGridViewToDataTable(dataGridView2);
+
+            AggiornaGridView();
+        }
+
+        private void checkBox3_CheckedChanged(object sender, EventArgs e) {
+           comboBox10_SelectedIndexChanged(sender, e);
+        }
+
+        private void button1_Click_1(object sender, EventArgs e) {
+            string cliente = "";
+            string oggetto = "";
+            DateTime data;
+
+            bool doit = true;
+            if (comboBox11.SelectedText!="") {
+                cliente = comboBox11.SelectedText;
+            } else {
+                MessageBox.Show("Inserire un cliente valido");
+                comboBox11.SelectedItem = "";
+                doit = false;
+            }
+            if (comboBox12.SelectedText != "") {
+                oggetto = comboBox12.SelectedText;
+            } else {
+                MessageBox.Show("Inserire un oggetto valido");
+                comboBox12.SelectedItem = "";
+                doit = false;
+            }
+            if (dateTimePicker1!= null) {
+                data = dateTimePicker1.Value;
+            } else {
+                MessageBox.Show("Inserire una data valida");
+                comboBox12.SelectedItem = "";
+                doit = false;
+            }
+
+            //estrarre id di cliente e oggetto e modificare fromato di data
+
+            if (doit) {
+                ShortQuery($"insert into `oggetti`(`nome`, `costo`) values(\"{nome}\", \"{costo}\")");
+                textBox6.Text = "";
+                numericUpDown2.Value = 10;
+            }
+
+            AggiornaGridView();
         }
     }
 }
