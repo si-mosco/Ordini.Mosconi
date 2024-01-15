@@ -61,10 +61,16 @@ namespace Ordini.Mosconi {
 
             AggiornaGridView();
 
+            //clienti
             comboBox1.SelectedItem = comboBox1.Items[0];//azzero i valori
             comboBox2.Visible = false;
+            comboBox8.SelectedItem = comboBox8.Items[0];
+
+            //ordini
             comboBox3.SelectedItem = comboBox3.Items[0];
             comboBox4.Visible = false;
+
+            //oggetti
             comboBox5.SelectedItem = comboBox5.Items[0];
             comboBox6.Visible = false;
             comboBox7.Visible = false;
@@ -116,7 +122,7 @@ namespace Ordini.Mosconi {
             AggiornaGridView();
         }
 
-        public static string[] DataTableToStringArray(DataTable dt) //converte il risultato di una query in un array di stringhe
+        public string[] DataTableToStringArray(DataTable dt) //converte il risultato di una query in un array di stringhe
         {
             string[] result = new string[dt.Rows.Count];
             int index = 0;
@@ -156,6 +162,37 @@ namespace Ordini.Mosconi {
             cmd.ExecuteNonQuery();
             conn.Close();
         }
+
+        public string[] OrderArray(string[] values, bool decrescent) {
+            if (decrescent) {
+                Array.Sort(values);
+                Array.Reverse(values);
+            } else
+                Array.Sort(values);
+
+            return values;
+        }
+
+        public DataTable ConvertDataGridViewToDataTable(DataGridView dataGridView) {
+            DataTable dataTable = new DataTable();
+
+            // Aggiungi colonne alla DataTable usando i nomi delle colonne del DataGridView
+            foreach (DataGridViewColumn column in dataGridView.Columns) {
+                dataTable.Columns.Add(column.Name, column.ValueType ?? typeof(string));
+            }
+
+            // Aggiungi righe alla DataTable usando i dati del DataGridView
+            foreach (DataGridViewRow row in dataGridView.Rows) {
+                DataRow dataRow = dataTable.NewRow();
+                foreach (DataGridViewCell cell in row.Cells) {
+                    dataRow[cell.ColumnIndex] = cell.Value;
+                }
+                dataTable.Rows.Add(dataRow);
+            }
+
+            return dataTable;
+        }
+
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e) { //filtro clienti
             string[] valori = new string[] { "id", "nome", "cognome", "email" };
@@ -392,6 +429,28 @@ namespace Ordini.Mosconi {
             }
 
             AggiornaGridView();
+        }
+
+        private void comboBox8_SelectedIndexChanged(object sender, EventArgs e) { // ordina clienti
+            dataGridView1.Sort(dataGridView1.Columns[comboBox8.SelectedIndex], checkBox1.Checked ? System.ComponentModel.ListSortDirection.Descending : System.ComponentModel.ListSortDirection.Ascending);
+            d1 = ConvertDataGridViewToDataTable(dataGridView1);
+
+            AggiornaGridView();
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e) {
+            comboBox8_SelectedIndexChanged(sender, e);
+        }
+
+        private void comboBox9_SelectedIndexChanged(object sender, EventArgs e) {
+            dataGridView3.Sort(dataGridView3.Columns[comboBox9.SelectedIndex], checkBox2.Checked ? System.ComponentModel.ListSortDirection.Descending : System.ComponentModel.ListSortDirection.Ascending);
+            d3 = ConvertDataGridViewToDataTable(dataGridView2);
+
+            AggiornaGridView();
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e) {
+            comboBox9_SelectedIndexChanged(sender, e);
         }
     }
 }
