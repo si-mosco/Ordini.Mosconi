@@ -326,5 +326,72 @@ namespace Ordini.Mosconi {
         private void numericUpDown1_ValueChanged(object sender, EventArgs e) {
             comboBox7_SelectedIndexChanged(sender, e);
         }
+
+        private void button5_Click(object sender, EventArgs e) { //aggiungi cliente
+            string nome = "";
+            string cognome = "";
+            string email = "";
+
+            bool doit = true;
+            if (!String.IsNullOrWhiteSpace(textBox1.Text)) {
+                nome = textBox1.Text;
+            } else {
+                MessageBox.Show("Inserire un nome valido");
+                textBox1.Text = "";
+                doit = false;
+            }
+            if (!String.IsNullOrWhiteSpace(textBox2.Text)) {
+                cognome = textBox2.Text;
+            } else {
+                MessageBox.Show("Inserire un cognome valido");
+                textBox2.Text = "";
+                doit = false;
+            }
+            if (!String.IsNullOrWhiteSpace(textBox3.Text)) {
+                email = textBox3.Text;
+            } else {
+                MessageBox.Show("Inserire una email valida");
+                textBox3.Text = "";
+                doit = false;
+            }
+
+            if (doit) {
+                ShortQuery($"insert into `clienti`(`nome`, `cognome`, `email`) values(\"{nome}\", \"{cognome}\", \"{email}\")");
+                textBox1.Text = "";
+                textBox2.Text = "";
+                textBox3.Text = "";
+            }
+
+            AggiornaGridView();
+        }
+
+        private void button6_Click(object sender, EventArgs e) { //aggiungi oggetto
+            string nome = "";
+            int costo = 0;
+
+            bool doit = true;
+            if (!String.IsNullOrWhiteSpace(textBox6.Text)) {
+                nome = textBox6.Text;
+            } else {
+                MessageBox.Show("Inserire un nome valido");
+                textBox6.Text = "";
+                doit = false;
+            }
+            if (numericUpDown2.Value>0) {
+                costo = (int)numericUpDown2.Value;
+            } else {
+                MessageBox.Show("Inserire un costo valido");
+                numericUpDown2.Value = 10;
+                doit = false;
+            }
+
+            if (doit) {
+                ShortQuery($"insert into `oggetti`(`nome`, `costo`) values(\"{nome}\", \"{costo}\")");
+                textBox6.Text = "";
+                numericUpDown2.Value = 10;
+            }
+
+            AggiornaGridView();
+        }
     }
 }
