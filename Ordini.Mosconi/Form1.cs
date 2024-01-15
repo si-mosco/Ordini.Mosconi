@@ -299,9 +299,12 @@ namespace Ordini.Mosconi {
             }
 
             var ris = MessageBox.Show("", "Conferma cancellazione", MessageBoxButtons.YesNo);
-            if (ris == DialogResult.Yes)
-                ShortQuery($"delete from {table} where id='{pk}';");
-
+            try {
+                if (ris == DialogResult.Yes)
+                    ShortQuery($"delete from {table} where id='{pk}';");
+            } catch {
+                MessageBox.Show("L'elemento non può essere eliminato, visto che è associato ad un altro elemento");
+            }
             AggiornaGridView();
         }
 
@@ -318,6 +321,10 @@ namespace Ordini.Mosconi {
 
         private void button4_Click(object sender, EventArgs e) {
             Elimina();
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e) {
+            comboBox7_SelectedIndexChanged(sender, e);
         }
     }
 }
