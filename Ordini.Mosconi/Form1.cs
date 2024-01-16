@@ -36,9 +36,9 @@ namespace Ordini.Mosconi {
             tabControl1.SelectedIndex = 3;
             comboBox1.SelectedIndex = 0;
 
-            d1= Query("select * from clienti;");
-            d2= Query("select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;");
-            d3= Query("select * from oggetti;");
+            d1 = Query("select * from clienti;");
+            d2 = Query("select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;");
+            d3 = Query("select * from oggetti;");
 
             Aggiorna();
         }
@@ -69,13 +69,13 @@ namespace Ordini.Mosconi {
 
             //ordini
             comboBox3.SelectedItem = comboBox3.Items[0];
-            comboBox4.Visible = false; 
+            comboBox4.Visible = false;
             comboBox4.Items.Clear();
             comboBox10.SelectedItem = comboBox10.Items[0];
             comboBox11.Items.Clear();
             comboBox12.Items.Clear();
-            comboBox11.Items.AddRange(DataTableToStringArray(Query("select clienti.email from clienti;")).Distinct().ToArray());
-            comboBox12.Items.AddRange(DataTableToStringArray(Query("select oggetti.nome from oggetti;")).Distinct().ToArray());
+            comboBox11.Items.AddRange(DataTableToStringArray(Query("select clienti.id, clienti.email from clienti;")).Distinct().ToArray());
+            comboBox12.Items.AddRange(DataTableToStringArray(Query("select oggetti.id, oggetti.nome from oggetti;")).Distinct().ToArray());
 
 
             //oggetti
@@ -250,7 +250,7 @@ namespace Ordini.Mosconi {
 
             if (comboBox5.SelectedIndex != 3)
                 d3 = Query($"select * from oggetti where oggetti.{valori[comboBox5.SelectedIndex - 1]} = '{comboBox6.GetItemText(comboBox6.SelectedItem)}';");
-            
+
             AggiornaGridView();
         }
 
@@ -314,7 +314,7 @@ namespace Ordini.Mosconi {
 
         private void Elimina() {
             int selezionati = 0;
-            string pk="";
+            string pk = "";
             string table = "";
             if (tabControl1.SelectedIndex == 0) {
                 table = "clienti";
@@ -424,7 +424,7 @@ namespace Ordini.Mosconi {
                 textBox6.Text = "";
                 doit = false;
             }
-            if (numericUpDown2.Value>0) {
+            if (numericUpDown2.Value > 0) {
                 costo = (int)numericUpDown2.Value;
             } else {
                 MessageBox.Show("Inserire un costo valido");
@@ -471,43 +471,43 @@ namespace Ordini.Mosconi {
         }
 
         private void checkBox3_CheckedChanged(object sender, EventArgs e) {
-           comboBox10_SelectedIndexChanged(sender, e);
+            comboBox10_SelectedIndexChanged(sender, e);
         }
 
         private void button1_Click_1(object sender, EventArgs e) {
             string cliente = "";
             string oggetto = "";
-            DateTime data;
+            string data = "";
 
             bool doit = true;
-            if (comboBox11.SelectedText!="") {
-                cliente = comboBox11.SelectedText;
+            if (comboBox11.GetItemText(comboBox11.SelectedItem) != "") {
+                cliente = comboBox11.GetItemText(comboBox11.SelectedItem).Split(' ')[0];
             } else {
                 MessageBox.Show("Inserire un cliente valido");
                 comboBox11.SelectedItem = "";
                 doit = false;
             }
-            if (comboBox12.SelectedText != "") {
-                oggetto = comboBox12.SelectedText;
+            if (comboBox12.GetItemText(comboBox12.SelectedItem) != "") {
+                oggetto = comboBox12.GetItemText(comboBox12.SelectedItem).Split(' ')[0];
             } else {
                 MessageBox.Show("Inserire un oggetto valido");
                 comboBox12.SelectedItem = "";
                 doit = false;
             }
-            if (dateTimePicker1!= null) {
-                data = dateTimePicker1.Value;
+            if (dateTimePicker1 != null) {
+                DateTime temp = dateTimePicker1.Value;
+                data = $"{temp.Year}/{temp.Month}/{temp.Day}";
             } else {
                 MessageBox.Show("Inserire una data valida");
-                comboBox12.SelectedItem = "";
+                dateTimePicker1.Value = DateTime.Now;
                 doit = false;
             }
 
-            //estrarre id di cliente e oggetto e modificare fromato di data
-
             if (doit) {
-                ShortQuery($"insert into `oggetti`(`nome`, `costo`) values(\"{nome}\", \"{costo}\")");
-                textBox6.Text = "";
-                numericUpDown2.Value = 10;
+                ShortQuery($"insert into `ordini`(`cliente_id`, `data_ordine`, `oggetto_id`) values ({cliente},\"{data}\",{oggetto});");
+                comboBox11.SelectedItem = "";
+                comboBox12.SelectedItem = "";
+                dateTimePicker1.Value = DateTime.Now;
             }
 
             AggiornaGridView();
