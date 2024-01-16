@@ -409,6 +409,8 @@ namespace Ordini.Mosconi {
                 textBox3.Text = "";
             }
 
+            d1 = Query("select * from clienti;");
+
             AggiornaGridView();
         }
 
@@ -437,6 +439,8 @@ namespace Ordini.Mosconi {
                 textBox6.Text = "";
                 numericUpDown2.Value = 10;
             }
+
+            d3 = Query("select * from oggetti;");
 
             AggiornaGridView();
         }
@@ -509,6 +513,8 @@ namespace Ordini.Mosconi {
                 comboBox12.SelectedItem = "";
                 dateTimePicker1.Value = DateTime.Now;
             }
+
+            d2 = Query("select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;");
 
             AggiornaGridView();
         }
