@@ -136,9 +136,9 @@
             this.checkBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.8209F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBox1.Location = new System.Drawing.Point(23, 209);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(175, 33);
+            this.checkBox1.Size = new System.Drawing.Size(171, 33);
             this.checkBox1.TabIndex = 14;
-            this.checkBox1.Text = "Descescente";
+            this.checkBox1.Text = "Decrescente";
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
@@ -362,9 +362,9 @@
             this.checkBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.8209F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBox3.Location = new System.Drawing.Point(23, 209);
             this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(175, 33);
+            this.checkBox3.Size = new System.Drawing.Size(171, 33);
             this.checkBox3.TabIndex = 21;
-            this.checkBox3.Text = "Descescente";
+            this.checkBox3.Text = "Decrescente";
             this.checkBox3.UseVisualStyleBackColor = true;
             this.checkBox3.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
             // 
@@ -535,9 +535,9 @@
             this.checkBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.8209F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.checkBox2.Location = new System.Drawing.Point(23, 209);
             this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(175, 33);
+            this.checkBox2.Size = new System.Drawing.Size(171, 33);
             this.checkBox2.TabIndex = 22;
-            this.checkBox2.Text = "Descescente";
+            this.checkBox2.Text = "Decrescente";
             this.checkBox2.UseVisualStyleBackColor = true;
             this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
