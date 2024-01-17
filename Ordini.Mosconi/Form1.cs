@@ -584,5 +584,10 @@ namespace Ordini.Mosconi {
             }
             AggiornaGridView();
         }
+
+        private void dataGridView3_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
