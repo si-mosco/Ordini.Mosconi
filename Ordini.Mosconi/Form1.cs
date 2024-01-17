@@ -576,18 +576,19 @@ namespace Ordini.Mosconi {
             try
             {
                 if (ris == DialogResult.Yes)
+                {
                     ShortQuery($"delete from {table} where id='{pk}';");
+                    d1 = Query("select * from clienti;");
+                    d2 = Query("select ordini.id, email, ordini.data_ordine, oggetti.nome, costo from (clienti join ordini on clienti.id=ordini.cliente_id) join oggetti on oggetti.id=ordini.oggetto_id;");
+                    d3 = Query("select * from oggetti;");
+                }
             }
             catch
             {
                 MessageBox.Show("L'elemento non può essere eliminato, visto che è associato ad un altro elemento");
             }
+
             AggiornaGridView();
-        }
-
-        private void dataGridView3_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
         }
     }
 }

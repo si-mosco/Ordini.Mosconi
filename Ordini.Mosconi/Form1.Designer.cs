@@ -710,7 +710,6 @@
             this.dataGridView3.RowHeadersWidth = 57;
             this.dataGridView3.Size = new System.Drawing.Size(538, 429);
             this.dataGridView3.TabIndex = 1;
-            this.dataGridView3.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView3_CellContentClick);
             // 
             // mySqlCommand1
             // 
